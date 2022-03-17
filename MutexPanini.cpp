@@ -4,13 +4,14 @@
 #include <mutex>
 using namespace std;
 list<string> Ingredienti;
-mutex m;
+mutex m; //semaforo binario per controllare gli accessi
 string nome_ricetta;
+
 void inserisci_ordine(string ricetta){
-  m.lock();
+  m.lock(); //blocco la risorsa
     cout<<"Ordine per:"<<ricetta<<endl;
     int i = 0;
-    while(i == 0){
+    while(i == 0){ //inserimento ordine
         string ingrediente = "";
         cout<<"Ingrediente:"<<endl;
         cin>>ingrediente;
@@ -20,19 +21,19 @@ void inserisci_ordine(string ricetta){
         }
         Ingredienti.push_back(ingrediente);
     }
-  m.unlock();
+  m.unlock(); //sbolocco la risorsa
 }
 
 void prepara_ricetta(string ricetta)
 {
-  m.lock();
+  m.lock(); //blocco la risorsa
   cout<<"Preparazione di:"<< ricetta<<endl;
   int size = Ingredienti.size();
-  for(int i = 0; i < size; i++){
+  for(int i = 0; i < size; i++){ //stampo gli ingredienti
     cout<<Ingredienti.front()<<endl;
     Ingredienti.pop_front();
   }
-  m.unlock();
+  m.unlock(); //sblocco la risorsa
 }
 void ordina(string ricetta){
   inserisci_ordine(ricetta);
